@@ -3,30 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-        input{
-            background-color: #d900ff;
-        }
-    </style>
-    <style>
-        .b1{background-color: azure;}
-        .b2{background-color: #f0f2ff;}
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-<h1>hello，前端页面</h1>
-    <input type="text" style="height: 30px" id="myinput" class="b1">
-    <input type="text" class="b1">
-    <input type="text" style="height: 30px" id="myinput" class="b2">
-    <input type="text" style="height: 30px" id="myinput"class="b2">
-    <button onclick="click_alert()">点我</button>
+<h1 style="text-align: center">Mock项目列表</h1>
+{#    <table class="table table-bordered table-condensed " style="width: 80% ;margin-left: 10%;margin-top: 100px">#}
+{#        <thead style="background-color: aquamarine">#}
+{#         <th>项目标题</th>#}
+{#         <th>创建者</th>#}
+{#         <th>操作</th>#}
+{##}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for i in project_list %}#}
+{#            <tr>#}
+{#            <td>#}
+{#                {{ i.name }}#}
+{#            </td><td>#}
+{#                {{ i.creator }}#}
+{#            </td><td>#}
+{#                <a href="">进入</a>#}
+{#                <a href="/del_project/{{ i.id }}">删除</a>#}
+{#            </td>#}
+{##}
+{#            </tr>#}
+{##}
+{#        {% endfor %}#}
+{##}
+{##}
+{#        </tbody>#}
+{#    </table>#}
+<div class="table-responsive">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+        <table class="table table-bordered table-hover table-condensed" style="width: 80% ;margin-left: 10%;margin-top: 100px">
+            <thead style="background-color: aquamarine">
+                <tr>
+                    <th class="warning">
+                        项目标题
+                    </th>
+                    <th class="success">
+                        创建者
+                    </th>
+                    <th  class="active">
+                        操作
+                    </th>
 
-    <script>
-        function click_alert() {
-            alert(document.getElementById('myinput').value)
+                </tr>
+            </thead>
+            <tbody>
+    {% for i in project_list %}
+        <tr >
+        <td>
+            {{ i.name }}
+        </td><td>
+            {{ i.creator }}
+        </td><td>
+            <a href="" class="btn btn-success">进入</a>
+            <a href="/del_project/{{ i.id }}" class="btn btn-warning">删除</a>
+{#            <a href="#" class="btn btn-default btn-lg" role="button">链接</a>#}
 
-        }
-    </script>
+
+        </td>
+
+        </tr>
+
+    {% endfor %}
+
+
+    </tbody>
+        </table>
+
+		</div>
+	</div>
+
+</div>
 
 </body>
 </html>

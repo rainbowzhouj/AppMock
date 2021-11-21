@@ -14,10 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from Myapp.views import project_list
+from django.urls import path,re_path
+from Myapp.views import project_list, del_project
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('project_list/',project_list),
+    re_path('del_project/(?P<pid>.+)/',del_project) # 添加删除项目的url
+
 ]
