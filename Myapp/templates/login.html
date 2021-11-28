@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/static/jquery-1.11.0.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-3.4.1/dist/css/bootstrap.min.css"  >
+    <script type="text/javascript" src="/static/bootstrap-3.4.1/dist/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            background:linear-gradient(to right, #e1eed7, #41d95c);
+        }
+        .div7{
+            width: 50%;margin-left: 25%;margin-top: 100px;
+            background: url("/static/login.gif");background-size: cover;
+            box-shadow: 4px 4px 15px #707371;border-radius: 5px;
+            color: white;padding-top: 30px;
+        }
+        a{
+            color: white;
+        }
+        span{
+            font-size: xx-small;
+            margin-left:20px;
+        }
+        input{
+            height: 35px;width: 100%;border-radius: 20px;border: 0;
+            background: rgba(255,255,255,0.3);padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="div7">
+    <ul class="nav nav-tabs" style="padding-left: 35%">
+        <li class="active">
+            <a href="#IN" data-toggle="tab">
+                SIGN IN
+            </a>
+        </li>
+        <li>
+            <a href="#UP" data-toggle="tab">
+                SIGN UP
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content" style="padding-top: 30px;width: 80%;margin-left: 10%">
+        <div class="tab-pane active" id="IN">
+            <span>
+                USERNAME
+            </span><br>
+            <input type="text" autocomplete="off">
+            <br><br>
+            <span>
+                PASSWORD
+            </span><br>
+            <input type="password" autocomplete="new-password">
+            <br><br>
+            <a href="" style="font-size: xx-small;float: right;margin-right: 20px;color: white">Forgot Password</a>
+            <br><br>
+            <button class="btn btn-danger" style="border-radius: 20px;width: 100%">SIGN IN</button>
+            <br><br><br>
+        </div>
+        <div class="tab-pane " id="UP">
+            <span>
+                USERNAME
+            </span><br>
+            <input type="text" autocomplete="off">
+            <br><br>
+            <span>
+                PASSWORD
+            </span><br>
+            <input type="password" autocomplete="off">
+            <br><br>
+            <span>
+                CONFIRM-PASSWORD
+            </span><br>
+            <input type="password" autocomplete="off">
+            <br><br>
+            <span>
+                EMAIL
+            </span><br>
+            <input type="email" autocomplete="off">
+            <br><br>
+            <a href="" style="font-size: xx-small;float: right;margin-right: 20px;color: white">Having Account</a>
+            <br><br>
+            <button class="btn btn-danger" style="border-radius: 20px;width: 100%">SIGN UP</button>
+            <br><br><br>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

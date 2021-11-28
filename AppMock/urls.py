@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,re_path
-from Myapp.views import project_list, del_project
-
+from Myapp.views import project_list, del_project, login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('project_list/',project_list),
-    re_path('del_project/(?P<pid>.+)/',del_project) # 添加删除项目的url
+    re_path('del_project/(?P<pid>.+)/',del_project), # 添加删除项目的url
+    path('',project_list), # 进入项目首页
+    path('login/',login)
 
 ]
