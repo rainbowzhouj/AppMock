@@ -25,6 +25,7 @@ urlpatterns = [
     path('login/',login),
     path('sign_in/',sign_in),
     path('sign_up/',sign_up),
-    path('accounts/login/',login)
+    path('accounts/login/',login),
+    path('logout/',logout),
 
 ]
