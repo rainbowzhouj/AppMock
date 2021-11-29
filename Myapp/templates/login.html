@@ -44,50 +44,67 @@
         </li>
     </ul>
     <div class="tab-content" style="padding-top: 30px;width: 80%;margin-left: 10%">
+
         <div class="tab-pane active" id="IN">
-            <span>
+            <form action="/sign_in/">
+                <span>
                 USERNAME
-            </span><br>
-            <input type="text" autocomplete="off">
-            <br><br>
-            <span>
-                PASSWORD
-            </span><br>
-            <input type="password" autocomplete="new-password">
-            <br><br>
-            <a href="" style="font-size: xx-small;float: right;margin-right: 20px;color: white">Forgot Password</a>
-            <br><br>
-            <button class="btn btn-danger" style="border-radius: 20px;width: 100%">SIGN IN</button>
-            <br><br><br>
+                </span><br>
+                <input type="text" autocomplete="off" name="in_username">
+                <br><br>
+                <span>
+                    PASSWORD
+                </span><br>
+                <input type="password" autocomplete="new-password" name="in_password">
+                <br><br>
+                <a href="" style="font-size: xx-small;float: right;margin-right: 20px;color: white">Forget Password</a>
+                <br><br>
+                <button class="btn btn-danger" style="border-radius: 20px;width: 100%">SIGN IN</button>
+                <br><br><br>
+            </form>
+
         </div>
         <div class="tab-pane " id="UP">
-            <span>
+            <form action="/sign_up/">
+                <span>
                 USERNAME
-            </span><br>
-            <input type="text" autocomplete="off">
-            <br><br>
-            <span>
-                PASSWORD
-            </span><br>
-            <input type="password" autocomplete="off">
-            <br><br>
-            <span>
-                CONFIRM-PASSWORD
-            </span><br>
-            <input type="password" autocomplete="off">
-            <br><br>
-            <span>
-                EMAIL
-            </span><br>
-            <input type="email" autocomplete="off">
-            <br><br>
-            <a href="" style="font-size: xx-small;float: right;margin-right: 20px;color: white">Having Account</a>
-            <br><br>
-            <button class="btn btn-danger" style="border-radius: 20px;width: 100%">SIGN UP</button>
-            <br><br><br>
+                </span><br>
+                <input type="text" autocomplete="off" name="up_username">
+                <br><br>
+                <span>
+                    PASSWORD
+                </span><br>
+                <input id="up_password" type="password" autocomplete="new-password" name="up_passward">
+                <br><br>
+                <span>
+                    CONFIRM-PASSWORD
+                </span><br>
+                <input id="cf_password" type="password" autocomplete="off" oninput="check_pwd()" >
+                <br><br>
+                <span>
+                    EMAIL
+                </span><br>
+                <input type="email" autocomplete="off" name="up_email">
+                <br><br>
+                <a href="" style="font-size: xx-small;float: right;margin-right: 20px;color: white">Having Account</a>
+                <br><br>
+                <button id="sign_up" disabled class="btn btn-danger" style="border-radius: 20px;width: 100%" >SIGN UP</button>
+                <br><br><br>
+            </form>
         </div>
     </div>
 </div>
+<script>
+    function check_pwd(){
+        var password=document.getElementById('up_password').value;
+        var confirm_password=document.getElementById('cf_password').value;
+        if(password != confirm_password){
+            document.getElementById('sign_up').disabled=true;
+        }else {
+            document.getElementById('sign_up').disabled=false;
+        }
+    }
+</script>
 
 
 </body>
