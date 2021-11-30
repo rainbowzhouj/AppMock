@@ -27,5 +27,7 @@ urlpatterns = [
     path('sign_up/',sign_up),
     path('accounts/login/',login),
     path('logout/',logout),
+    path('reset_password/',reset_password),
+    path('send_email_pwd/',send_email_pwd),
 
 ]

@@ -57,7 +57,7 @@
                 </span><br>
                 <input type="password" autocomplete="new-password" name="in_password">
                 <br><br>
-                <a href="" style="font-size: xx-small;float: right;margin-right: 20px;color: white">Forget Password</a>
+                <a href="#FORGET" data-toggle="tab" style="font-size: xx-small;float: right;margin-right: 20px;color: white">Forget Password</a>
                 <br><br>
                 <button class="btn btn-danger" style="border-radius: 20px;width: 100%">SIGN IN</button>
                 <br><br><br>
@@ -92,6 +92,25 @@
                 <br><br><br>
             </form>
         </div>
+        <div class="tab-pane" id="FORGET" >
+            <form action="/reset_password/">
+                <span>username which you forget</span>
+                <input type="text" autocomplete="off" name="fg_username" id="fg_username">
+                <br><br>
+                <span>your email's code</span><button onclick="send_email()"type="button" style="color:black;" >send email</button>
+                <input type="text" autocomplete="off" name="fg_code" >
+                <br><br>
+                <span>new password</span>
+                <input type="text" autocomplete="off" name="fg_password">
+                <br><br>
+                <button class="btn btn-danger" style="border-radius: 20px;width: 100%" >Submit</button>
+                <br><br><br>
+
+            </form>
+
+
+
+        </div>
     </div>
 </div>
 <script>
@@ -103,6 +122,17 @@
         }else {
             document.getElementById('sign_up').disabled=false;
         }
+    }
+    function send_email(){
+        $.get("/send_email_pwd/",{
+            "username":document.getElementById('fg_username').value
+        },function (ret){
+            if(ret=='yes'){
+                alert('send success!')
+            }else {
+                alert('send fail!')
+            }
+        })
     }
 </script>
 
