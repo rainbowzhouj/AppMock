@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>项目详情页</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        th{ text-align: center}
+        td{ text-align: center}
+    </style>
+</head>
+<body>
+{% include 'menu.html' %}
+<table class="table table-bordered table-condensed table-striped" style="width: 80%;margin-left: 10%;">
+    <thead style="background-color: #2d2f2f;color: white">
+        <tr>
+            <th>mock单元标题</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in mocks %}
+            <tr>
+                <td>
+                    {{ i.name }}
+                </td>
+                <td>
+                    {{ i.state }}
+                </td>
+                <td>
+                    <a href="">启用</a>
+                    <a href="">弃用</a>
+                    <a href="">设置</a>
+                    <a href="/del_mock/{{ i.id }}/">删除</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+</body>
+</html>

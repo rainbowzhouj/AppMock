@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('project_list/',project_list),
     re_path('del_project/(?P<pid>.+)/',del_project), # 添加删除项目的url
+    path('add_project/',add_project),
     path('',project_list), # 进入项目首页
     path('login/',login),
     path('sign_in/',sign_in),
@@ -29,5 +30,8 @@ urlpatterns = [
     path('logout/',logout),
     path('reset_password/',reset_password),
     path('send_email_pwd/',send_email_pwd),
+    re_path('mock_list/(?P<project_id>.+)/', mock_list),  # 进入项目详情页(mock列表页)
+    re_path('add_mock/(?P<project_id>.+)/', add_mock),  # 新增单元
+    re_path('del_mock/(?P<mock_id>.+)/', del_mock),  # 删除单元
 
 ]

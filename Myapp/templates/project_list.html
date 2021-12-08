@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style >
-        th{text-align: center}
-        td{text-align: center}
+    <style>
+        th {
+            text-align: center
+        }
+
+        td {
+            text-align: center
+        }
     </style>
 </head>
 
@@ -14,14 +19,15 @@
 <body>
 
 {% include "menu.html" %}
-<h1 style="text-align: center">Mock项目列表</h1>
-{#<a href="/logout/" style="text-align: center" > 注销</a>#}
 
+<h1 style="text-align: center">Mock项目列表</h1>
+
+{#<a href="/logout/" style="text-align: center" > 注销</a>#}
 <div class="table-responsive">
-	<div class="row clearfix">
-		<div class="col-md-12 column">
-        <table class="table table-bordered table-hover table-condensed" style="width: 80% ;margin-left: 10%;">
-            <thead style="background-color: aquamarine;color: black">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <table class="table table-bordered table-hover table-condensed" style="width: 80% ;margin-left: 10%;">
+                <thead style="background-color: aquamarine;color: black">
                 <tr>
                     <th class="warning">
                         项目标题
@@ -29,37 +35,38 @@
                     <th class="success">
                         创建者
                     </th>
-                    <th  class="active">
+                    <th class="active">
                         操作
                     </th>
 
                 </tr>
-            </thead>
-            <tbody>
-    {% for i in project_list %}
-        <tr >
-        <td>
-            {{ i.name }}
-        </td><td>
-            {{ i.creator }}
-        </td><td>
-            <a href="" class="btn btn-success">进入</a>
-            <a href="/del_project/{{ i.id }}" class="btn btn-warning">删除</a>
-{#            <a href="#" class="btn btn-default btn-lg" role="button">链接</a>#}
+                </thead>
+                <tbody>
+                {% for i in project_list %}
+                    <tr>
+                        <td>
+                            {{ i.name }}
+                        </td>
+                        <td>
+                            {{ i.creator }}
+                        </td>
+                        <td>
+                            <a href="/mock_list/{{ i.id }}/" class="btn btn-success">进入</a>
+                            <a href="/del_project/{{ i.id }}" class="btn btn-warning">删除</a>
+                            {#            <a href="#" class="btn btn-default btn-lg" role="button">链接</a>#}
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
 
 
-        </td>
+                </tbody>
+            </table>
 
-        </tr>
-
-    {% endfor %}
-
-
-    </tbody>
-        </table>
-
-		</div>
-	</div>
+        </div>
+    </div>
 
 </div>
 
