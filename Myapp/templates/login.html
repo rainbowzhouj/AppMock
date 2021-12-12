@@ -46,23 +46,39 @@
     <div class="tab-content" style="padding-top: 30px;width: 80%;margin-left: 10%">
 
         <div class="tab-pane active" id="IN">
-            <form action="/sign_in/">
                 <span>
                 USERNAME
                 </span><br>
-                <input type="text" autocomplete="off" name="in_username">
+                <input type="text" autocomplete="off" id="in_username">
                 <br><br>
                 <span>
                     PASSWORD
                 </span><br>
-                <input type="password" autocomplete="new-password" name="in_password">
+                <input type="password" autocomplete="new-password" id="in_password">
                 <br><br>
                 <a href="#FORGET" data-toggle="tab" style="font-size: xx-small;float: right;margin-right: 20px;color: white">Forget Password</a>
                 <br><br>
-                <button class="btn btn-danger" style="border-radius: 20px;width: 100%">SIGN IN</button>
+                <button onclick="sign_in_fc()" class="btn btn-danger" style="border-radius: 20px;width: 100%">SIGN IN</button>
                 <br><br><br>
-            </form>
-
+            <script>
+                function sign_in_fc(){
+                            if(document.getElementById('in_username').value == ''){
+                                alert('请输入用户名！')
+                                return
+                            }
+                            // 提交给后端
+                            $.post('/sign_in/',{
+                                'in_username': document.getElementById('in_username').value ,
+                                'in_password': document.getElementById('in_password').value,
+                            },function (abc){
+                                if(abc == '1'){
+                                    document.location.href='/project_list/'
+                                }else{
+                                    alert('用户名密码错误！')
+                                }
+                            })
+                        }
+            </script>
         </div>
         <div class="tab-pane " id="UP">
             <form action="/sign_up/">
