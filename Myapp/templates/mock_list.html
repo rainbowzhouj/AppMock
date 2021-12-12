@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>项目详情页</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
+    <link rel="stylesheet" href="/static/lightbox/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/lightbox/node_modules/prismjs/themes/prism-tomorrow.css"/>
+
     <style>
         th{ text-align: center}
         td{ text-align: center}
@@ -39,6 +42,42 @@
     </tbody>
 </table>
 
+
+
+{# lightbox #}
+<script src="/static/lightbox/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/lightbox/js/bootstrap-show-modal.js"></script>
+<script src="/static/lightbox/node_modules/prismjs/prism.js"></script>
+<script>
+    function project_set(){
+         $.showModal({
+            title: '请设置项目',
+            body:
+                '<form><div class="form-group row">' +
+                '<div class="col-3"><label for="text" class="col-form-label">项目名称</label></div>' +
+                '<div class="col-9"><input type="text" class="form-control" id="project_name_input"/></div>' +
+                '</div>' +
+                '</form>',
+            footer: '<button type="button" class="btn btn-link" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary">保存</button>',
+            onCreate: function (modal) {
+                // create event handler for form submit and handle values
+                $(modal.element).on("click", "button[type='submit']", function (event) {
+                    event.preventDefault()
+                    var $form = $(modal.element).find("form")
+
+                    // 发送请求给后端
+                    $.get('/save_project/',{
+                        "new_name":$form.find("#project_name_input").val(),
+                        "project_id":'{{ project_id }}'
+                    },function (ret){
+                        modal.hide()
+                        document.location.reload()
+                    })
+                })
+            }
+        })
+    }
+</script>
 
 
 </body>
