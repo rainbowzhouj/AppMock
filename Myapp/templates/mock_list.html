@@ -35,13 +35,29 @@
                     <a href="">启用</a>
                     <a href="">弃用</a>
                     <a href="">设置</a>
-                    <a href="/del_mock/{{ i.id }}/">删除</a>
+                    <a href="javascript:del_mock({{ i.id }})">删除</a>
+{#                    <a href="/del_mock/{{ i.id }}/">删除</a>#}
                 </td>
+
             </tr>
         {% endfor %}
     </tbody>
 </table>
-
+<script>
+    function del_mock(mock_id) {
+        $.showConfirm({
+            title: "请确认删除", body: "你确定删除吗?", textTrue: "确定", textFalse: "取消",
+            onSubmit: function (result) {
+                if (result) {
+                    $.get('/del_mock/'+mock_id+'/',{},function (ret) {
+                        document.location.reload()
+                    })
+                } else {
+                }
+            },
+        })
+    }
+</script>
 
 
 {# lightbox #}
