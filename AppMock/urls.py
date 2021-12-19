@@ -20,6 +20,7 @@ from Myapp.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('project_list/',project_list),
+
     re_path('del_project/(?P<pid>.+)/',del_project), # 添加删除项目的url
     path('add_project/',add_project),
     path('save_project/',save_project), #保存项目
@@ -31,6 +32,7 @@ urlpatterns = [
     path('logout/',logout),
     path('reset_password/',reset_password),
     path('send_email_pwd/',send_email_pwd),
+    path('project_data/',project_data), #获取项目所有数据
 
 
     re_path('mock_list/(?P<project_id>.+)/', mock_list),  # 进入项目详情页(mock列表页)
