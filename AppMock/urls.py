@@ -38,5 +38,8 @@ urlpatterns = [
     re_path('mock_list/(?P<project_id>.+)/', mock_list),  # 进入项目详情页(mock列表页)
     re_path('add_mock/(?P<project_id>.+)/', add_mock),  # 新增单元
     re_path('del_mock/(?P<mock_id>.+)/', del_mock),  # 删除单元
+    path('save_mock/',save_mock), #保存单元
+    path('get_mock/',get_mock), #获取单元
+
 
 ]

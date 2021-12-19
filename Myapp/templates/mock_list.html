@@ -34,7 +34,7 @@
                 <td>
                     <a href="">启用</a>
                     <a href="">弃用</a>
-                    <a href="">设置</a>
+                    <a href="javascript:mock_set({{ i.id}})">设置</a>
                     <a href="javascript:del_mock({{ i.id }})">删除</a>
 {#                    <a href="/del_mock/{{ i.id }}/">删除</a>#}
                 </td>
@@ -92,6 +92,48 @@
                 })
             }
         })
+    }
+    function mock_set(mock_id){
+        $.get('/get_mock/',{
+            'mock_id':mock_id
+        },function (ret){
+            $.showModal({
+                title: '请设置mock单元',
+                body:
+                '<form>' +
+                '<div class="form-group row">' +
+                '<div class="col-3"><label for="text" class="col-form-label">mock名称</label></div>' +
+                '<div class="col-9"><input type="text" class="form-control" value="'+ret.mock.name+'" id="mock_name"/></div>' +
+                '</div>' +
+                '<div class="form-group row">' +
+                '<div class="col-3"><label for="text" class="col-form-label">抓包url</label></div>' +
+                '<div class="col-9"><input type="text" class="form-control" value="'+ret.mock.catch_url+'" id="catch_url" placeholder="写路由(可带参数)即可捕获到" /></div>' +
+                '</div>' +
+                '<div class="form-group row">' +
+                '<div class="col-3"><label for="text" class="col-form-label">返回值更新策略</label></div>' +
+                '<div class="col-9"><textarea id="mock_response_body" rows="5" class="form-control"  placeholder="每行一个规则，具体规则如下:">'+ret.mock.mock_response_body+'</textarea></div>' +
+                '</div>' +
+                '</form>',
+            footer: '<button type="button" class="btn btn-link" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary">保存</button>',
+            onCreate: function (modal) {
+                // create event handler for form submit and handle values
+                $(modal.element).on("click", "button[type='submit']", function (event) {
+                    event.preventDefault()
+                    var $form = $(modal.element).find("form")
+                    // 发送请求给后端
+                    $.get('/save_mock/',{
+                        "mock_id":mock_id,
+                        "mock_name":$form.find("#mock_name").val(),
+                        "catch_url":$form.find("#catch_url").val(),
+                        "mock_response_body":$form.find("#mock_response_body").val(),
+                    },function (ret){
+                        modal.hide()
+                        document.location.reload()
+                    })
+                })
+            }
+        })
+         })
     }
 </script>
 
