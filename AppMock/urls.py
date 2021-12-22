@@ -40,6 +40,11 @@ urlpatterns = [
     re_path('del_mock/(?P<mock_id>.+)/', del_mock),  # 删除单元
     path('save_mock/',save_mock), #保存单元
     path('get_mock/',get_mock), #获取单元
+    re_path('mock_on/(?P<mock_id>.+)/',mock_on), #启用单元
+    re_path('mock_off/(?P<mock_id>.+)/',mock_off),#禁用单元
+
+    ##### 测试调试
+    path('demo_span/',demo_span), # 调试用接口
 
 
 ]

@@ -46,9 +46,22 @@ def response(flow):
         all_updates='返回值更新策略'.split('\n')
         for u in all_updates:
             if '=>' in u:# 普通替换规则
-                flow.response.text=flow.response.text.replace('旧字符串','新字符')
-            elif '' in u:# json 路径替换规则
-                ...
+                flow.response.text=flow.response.text.replace(u.split("=>")[0].rstrip(),u.split("=>")[1].lstrip())
+            elif '=' in u:# json 路径替换规则
+                new=json.loads(flow.response.text)# json转化为字典
+                key = u.split('=')[0].rstrip()  # rstrip() 函数作用：去除右边空格
+                value = eval(u.split('=')[1].lstrip())  # eval() 函数作用：能把字符串转化成python的各种数据类型
+                tmp_cmd = ''
+                for i in key.split('.'):
+                    try:
+                        int(i)
+                        tmp_cmd += "[%s]" % i
+                    except:
+                        tmp_cmd += "[%s]" % repr(i)  # repr() 函数作用：去除右边空格
+
+                end_cmd = 'new' + tmp_cmd + "=value"
+                exec(end_cmd)
+                flow.response.text=json.dumps(new)
             else: #不符合规则
                 ...
 
