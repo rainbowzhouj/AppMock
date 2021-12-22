@@ -28,18 +28,27 @@
                 <td>
                     {{ i.name }}
                 </td>
-                <td>
+                <td id="state_{{ i.id }}">
                     {{ i.state }}
                 </td>
                 <td>
-                    <a href="">启用</a>
-                    <a href="">弃用</a>
+{#                    <a href="/mock_on/?mock_id={{ i.id}}">启用</a>#}
+                    <a href="/mock_on/{{ i.id}}/">启用</a>
+                    <a href="/mock_off/{{ i.id}}/">弃用</a>
                     <a href="javascript:mock_set({{ i.id}})">设置</a>
                     <a href="javascript:del_mock({{ i.id }})">删除</a>
 {#                    <a href="/del_mock/{{ i.id }}/">删除</a>#}
                 </td>
 
             </tr>
+            <script>
+                color_state=document.getElementById('state_{{ i.id }}')
+                if({{ i.state }}=='True'){
+                    color_state.style.color='green'
+                }else {
+                    color_state.style.color='red'
+                }
+            </script>
         {% endfor %}
     </tbody>
 </table>
