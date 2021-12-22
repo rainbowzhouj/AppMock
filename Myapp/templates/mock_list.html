@@ -43,9 +43,9 @@
             </tr>
             <script>
                 color_state=document.getElementById('state_{{ i.id }}')
-                if({{ i.state }}=='True'){
+                if('{{ i.state }}'=='True'){
                     color_state.style.color='green'
-                }else {
+                }else{
                     color_state.style.color='red'
                 }
             </script>
@@ -120,7 +120,8 @@
                 '</div>' +
                 '<div class="form-group row">' +
                 '<div class="col-3"><label for="text" class="col-form-label">返回值更新策略</label></div>' +
-                '<div class="col-9"><textarea id="mock_response_body" rows="5" class="form-control"  placeholder="每行一个规则，具体规则如下:">'+ret.mock.mock_response_body+'</textarea></div>' +
+                '<div class="col-9"><textarea id="mock_response_body" rows="5" class="form-control"  placeholder="每行一个规则，具体规则如下:' +
+                    '字符串替换使用=>,json替换使用=">'+ret.mock.mock_response_body+'</textarea></div>' +
                 '</div>' +
                 '</form>',
             footer: '<button type="button" class="btn btn-link" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary">保存</button>',

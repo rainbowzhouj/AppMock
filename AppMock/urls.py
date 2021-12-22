@@ -46,5 +46,9 @@ urlpatterns = [
     ##### 测试调试
     path('demo_span/',demo_span), # 调试用接口
 
+    ###
+    re_path('server_on/(?P<project_id>.+)/', server_on),  # 启用服务
+    re_path('server_off/(?P<project_id>.+)/', server_off),  # 禁用服务
+
 
 ]
