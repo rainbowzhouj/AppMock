@@ -11,7 +11,7 @@ import django
 import os, sys
 
 sys.path.append('/Users/zhoujing/PycharmProjects/AppMock')
-os.environ.setdefault('DJANGO_SETTING_MOUDLE', 'AppMock.setting')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE","AppMock.settings")
 django.setup()
 from Myapp.models import *
 
@@ -20,9 +20,9 @@ def request(flow):
     # 在发送请求前篡改发送的请求，编写干预的脚本，欺骗服务器
     print("路过的url为：" + flow.request.url)
     # 修改请求  url 是字符串
-    if 'mock_list' in flow.request.url:
-        old = flow.request.url
-        flow.request.url = old.replace('17', '55')
+    # if 'mock_list' in flow.request.url:
+    #     old = flow.request.url
+    #     flow.request.url = old.replace('17', '55')
     # 修改请求头  header
     # if 'mock_list' in flow.request.url:
     #     old = flow.request.headers
@@ -35,6 +35,7 @@ def request(flow):
 
 def response(flow):
     project_id = os.path.basename(__file__).split('_')[0]
+
     mocks = DB_mock.objects.filter(project_id=project_id, state=True)
     # 在发送请求后篡改返回的响应，编写干预的脚本，欺骗服务器
     # # 实现 rewrite
