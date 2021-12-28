@@ -17,20 +17,21 @@ from Myapp.models import *
 
 
 def request(flow):
+    ...
     # 在发送请求前篡改发送的请求，编写干预的脚本，欺骗服务器
-    print("路过的url为：" + flow.request.url)
-    # 修改请求  url 是字符串
+    # print("路过的url为：" + flow.request.url)
+    # #修改请求  url 是字符串
     # if 'mock_list' in flow.request.url:
     #     old = flow.request.url
-    #     flow.request.url = old.replace('17', '55')
-    # 修改请求头  header
+    #     flow.request.url = old.replace('20', '55')
+    # 修改请求头  header，类型为字典，键值对
     # if 'mock_list' in flow.request.url:
     #     old = flow.request.headers
     #     old.update({"ccc": "ddd"})
     #
-    # # 拦截,可定义返回值 response为字典
+    # # # 拦截,可定义返回值 response为字典
     # if 'demo' in flow.request.url:
-    #     flow.response = http.HTTPFlow.make(200, "jjj", {"aaa": "bbb"})
+    #     flow.response = http.Response.make(200, "jjj", {"aaa": "bbb"})
 
 
 def response(flow):
@@ -39,10 +40,11 @@ def response(flow):
     mocks = DB_mock.objects.filter(project_id=project_id, state=True)
     # 在发送请求后篡改返回的响应，编写干预的脚本，欺骗服务器
     # # 实现 rewrite
-    # if 'get_mock' in flow.response.url:
+    # if 'get_mock' in flow.request.url: # 此处为请求request 而不是response
     #     old=flow.response.text
     #     old=json.loads(old)
-    #     old['mock']['name']='一个被修改的'
+    #     print(old)
+    #     old['mock']['name']='11111'
     #     flow.response.text=json.dumps(old)
     for m in mocks:
         # mitmproxy  如何通过orm访问数据库替换数据
