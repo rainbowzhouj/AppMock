@@ -49,6 +49,8 @@
                     color_state.style.color='red'
                 }
             </script>
+            {% empty %}
+            <div style="line-height:50px;height:50px;background-color:wheat;position: absolute;top:300px ;width: 100%;text-align: center"><strong>没有内容</strong></div>
         {% endfor %}
     </tbody>
 </table>
