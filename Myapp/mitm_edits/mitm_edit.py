@@ -38,16 +38,8 @@ def response(flow):
     project_id = os.path.basename(__file__).split('_')[0]
 
     mocks = DB_mock.objects.filter(project_id=project_id, state=True)
-    # 在发送请求后篡改返回的响应，编写干预的脚本，欺骗服务器
-    # # 实现 rewrite
-    # if 'get_mock' in flow.request.url: # 此处为请求request 而不是response
-    #     old=flow.response.text
-    #     old=json.loads(old)
-    #     print(old)
-    #     old['mock']['name']='11111'
-    #     flow.response.text=json.dumps(old)
     for m in mocks:
-        # mitmproxy  如何通过orm访问数据库替换数据
+        # mitmproxy  如何通过orm访问数据库替换数据，引用djangosetting，找到对应的位置
         if m.catch_url in flow.request.url:
             all_updates = m.mock_response_body.split('\n')
             for u in all_updates:
@@ -56,10 +48,9 @@ def response(flow):
                                                                     u.split("=>")[1].lstrip())
                 elif '=' in u:  # json 路径替换规则
                     try:
-                        new = json.loads(flow.request.text)
+                        new = json.loads(flow.request.text) # 不标准的书写方式，不处理，json变dict
                     except:
                         continue
-
                     key = u.split('=')[0].rstrip()  # rstrip() 函数作用：去除右边空格
                     value = eval(u.split('=')[1].lstrip())  # eval() 函数作用：能把字符串转化成python的各种数据类型
                     tmp_cmd = ''
@@ -75,6 +66,7 @@ def response(flow):
                         exec(end_cmd)
                     except:
                         continue
-                    flow.response.text = json.dumps(new)
+                    flow.response.text = json.dumps(new)  # 重新转换为json
                 else:  # 不符合规则
                     ...
+            break

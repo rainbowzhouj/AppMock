@@ -44,7 +44,7 @@ urlpatterns = [
     re_path('mock_off/(?P<mock_id>.+)/',mock_off),#禁用单元
 
     ##### 测试调试
-    path('demo_span/',demo_span), # 调试用接口
+    # path('demo_span/',demo_span), # 调试用接口
 
     ###
     re_path('server_on/(?P<project_id>.+)/', server_on),  # 启用服务
