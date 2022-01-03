@@ -167,7 +167,12 @@ def save_mock(request):
     mock_name=request.GET['mock_name']
     catch_url=request.GET['catch_url']
     mock_response_body=request.GET['mock_response_body']
-    DB_mock.objects.filter(id=mock_id).update(name=mock_name,catch_url=catch_url,mock_response_body=mock_response_body)
+    model=request.GET['model']
+    response_headers=request.GET['response_headers']
+    state_code=request.GET['state_code']
+    mock_response_body_lj=request.GET['mock_response_body_lj']
+    DB_mock.objects.filter(id=mock_id).update(name=mock_name,catch_url=catch_url,mock_response_body=mock_response_body,
+                                              model=model,response_headers=response_headers,state_code=state_code,mock_response_body_lj=mock_response_body_lj,)
     return HttpResponse('')
 
 def get_mock(request):
