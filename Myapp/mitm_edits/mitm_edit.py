@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2021/12/22 3:42 下午
+# @Time    : 2021/12/25 3:42 下午
 # @Author  : rainbowzhouj
 # @FileName: mitm_edit.py
 # @Software: PyCharm
@@ -43,8 +43,12 @@ def response(flow):
             all_updates = m.mock_response_body.split('\n')
             for u in all_updates:
                 if '=>' in u:  # 普通替换规则
-                    flow.response.text = flow.response.text.replace(u.split("=>")[0].rstrip(),
-                                                                    u.split("=>")[1].lstrip()) #去除不符规范的写法，左右空格的去除
+                    try:
+                        json.loads(flow.response.text)
+                        flow.response.text = json.dumps(json.loads(flow.response.text),ensure_ascii=False)
+                    except:
+                        ...
+                    flow.response.text = flow.response.text.replace(u.split("=>")[0].rstrip(),u.split("=>")[1].lstrip()) #去除不符规范的写法，左右空格的去除
                 elif '=' in u:  # json 路径替换规则
                     try:
                         new = json.loads(flow.response.text) # 不标准的书写方式，不处理，json变dict
