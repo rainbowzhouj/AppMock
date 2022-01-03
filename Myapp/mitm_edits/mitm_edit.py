@@ -35,22 +35,21 @@ def request(flow):
 
 
 def response(flow):
-    project_id = os.path.basename(__file__).split('_')[0]
-
-    mocks = DB_mock.objects.filter(project_id=project_id, state=True)
+    project_id = os.path.basename(__file__).split('_')[0] #切割取出项目id
+    mocks = DB_mock.objects.filter(project_id=project_id, state=True)# 筛选出项目id且单元状态是启动的服务
     for m in mocks:
-        # mitmproxy  如何通过orm访问数据库替换数据，引用djangosetting，找到对应的位置
+        # mitmproxy  如何通过orm访问数据库替换数据，引用djangosetting，找到对应的位置  m 为每一个具体的单元
         if m.catch_url in flow.request.url:
             all_updates = m.mock_response_body.split('\n')
             for u in all_updates:
                 if '=>' in u:  # 普通替换规则
                     flow.response.text = flow.response.text.replace(u.split("=>")[0].rstrip(),
-                                                                    u.split("=>")[1].lstrip())
+                                                                    u.split("=>")[1].lstrip()) #去除不符规范的写法，左右空格的去除
                 elif '=' in u:  # json 路径替换规则
                     try:
-                        new = json.loads(flow.request.text) # 不标准的书写方式，不处理，json变dict
+                        new = json.loads(flow.response.text) # 不标准的书写方式，不处理，json变dict
                     except:
-                        continue
+                        continue # 如果有出错的，我们就跳过它不进行处理 报错信息：most recent call
                     key = u.split('=')[0].rstrip()  # rstrip() 函数作用：去除右边空格
                     value = eval(u.split('=')[1].lstrip())  # eval() 函数作用：能把字符串转化成python的各种数据类型
                     tmp_cmd = ''
@@ -65,7 +64,7 @@ def response(flow):
                     try:
                         exec(end_cmd)
                     except:
-                        continue
+                        continue #如果没有找到的，我们同样跳过
                     flow.response.text = json.dumps(new)  # 重新转换为json
                 else:  # 不符合规则
                     ...

@@ -19,13 +19,13 @@
         <tr>
             <th>mock单元标题</th>
             <th>状态</th>
-            <th>操作</th>
+            <th style="min-width: 200px;">操作</th>
         </tr>
     </thead>
     <tbody>
         {% for i in mocks %}
             <tr>
-                <td>
+                <td style="max-width: 500px;white-space:nowrap;overflow-x:auto;">
                     {{ i.name }}
                 </td>
                 <td id="state_{{ i.id }}">
@@ -108,6 +108,7 @@
         $.get('/get_mock/',{
             'mock_id':mock_id
         },function (ret){
+            console.log(ret)
             $.showModal({
                 title: '请设置mock单元',
                 body:
