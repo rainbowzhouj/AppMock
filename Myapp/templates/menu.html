@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/static/bitbug_favicon.ico">
 	<link rel="stylesheet" type="text/css" href="/static/menu_window10/css/reset.css" />
 	<link rel='stylesheet' href='/static/font-awesome-4.7.0/css/font-awesome.min.css'>
 	<link rel="stylesheet" type="text/css" href="/static/menu_window10/css/styles.css">
@@ -14,8 +15,15 @@
 		  <div class="bar">
 		    <button id="navbox-trigger" class="navbox-trigger"><i class="fa fa-lg fa-th"></i></button>
               <strong><span style="color: white">{{ page_name }}</span></strong>
-              &nbsp;<strong><span style="color: white">{{ project_state }}</span></strong>
+              &nbsp;<strong><span id="project_state" >{{ project_state }}</span></strong>
 {#              <strong><span style="color: white" id ="demo_span"></span></strong>#}
+              <script>
+                  if('{{ project_state }}'.indexOf('True')==-1){
+                      document.getElementById('project_state').style.color='red'
+                  }else {
+                      document.getElementById('project_state').style.color='green'
+                  }
+              </script>
 		  </div>
 		  <div class="navbox">
 		    <div class="navbox-tiles">
