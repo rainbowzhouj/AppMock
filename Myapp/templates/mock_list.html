@@ -169,6 +169,15 @@
             document.getElementById('model').value=ret.mock.model;
             //负责控制输入的显示和隐藏
             function change_model(model){
+                if (model=='Interceptor'){
+                    document.getElementById('display_lj_0').style.display='';
+                    document.getElementById('display_lj_1').style.display='';
+                    document.getElementById('display_fx_0').style.display='none';
+                }else{
+                    document.getElementById('display_lj_0').style.display='none';
+                    document.getElementById('display_lj_1').style.display='none';
+                    document.getElementById('display_fx_0').style.display='';
+                }
 
             }
             //打开弹窗时默认调用
