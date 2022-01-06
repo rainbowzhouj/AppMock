@@ -21,6 +21,7 @@ class DB_mock(models.Model):
     mock_response_body_lj=models.TextField(null=True,blank=True,default='') # 拦截模式的写死的返回值
     state_code=models.IntegerField(default=200)
     response_headers=models.CharField(max_length=500,null=True,blank=True,default='{}')
+    mock_time=models.FloatField(default=0) # 整个请求周期时间控制
 
     def __str__(self):
         return self.name

@@ -122,6 +122,10 @@
                 '<div class="col-9"><input type="text" class="form-control" value="'+ret.mock.catch_url+'" id="catch_url" placeholder="写url内关键字"/></div>' +
                 '</div>'+
                 '<div class="form-group row">' +
+                '<div class="col-3"><label for="text" class="col-form-label">时间控制</label></div>' +
+                '<div class="col-9"><input type="text" class="form-control" value="'+ret.mock.mock_time+'" id="mock_time" placeholder="时间必须为数字，不能为0或负数"/></div>' +
+                '</div>'+
+                '<div class="form-group row">' +
                 '<div class="col-3"><label for="text" class="col-form-label">返回头</label></div>' +
                 '<div class="col-9"><textarea  id="response_headers" class="form-control" rows="3" placeholder=r"必须是json格式如：{"a"：1，"b":"bb"}">'+ret.mock.response_headers+'</textarea></div>' +
                 '</div>'+
@@ -154,6 +158,7 @@
                         "mock_id":mock_id,
                         "mock_name":$form.find("#mock_name").val(),
                         "catch_url":$form.find("#catch_url").val(),
+                        "mock_time":$form.find("#mock_time").val(),
                         "model":$form.find("#model").val(),
                         "response_headers":$form.find("#response_headers").val(),
                         "state_code":$form.find("#state_code").val(),

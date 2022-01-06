@@ -166,6 +166,7 @@ def save_mock(request):
     mock_id=request.GET['mock_id']
     mock_name=request.GET['mock_name']
     catch_url=request.GET['catch_url']
+    mock_time=request.GET['mock_time']
     mock_response_body=request.GET['mock_response_body']
     model=request.GET['model']
     response_headers=request.GET['response_headers']
