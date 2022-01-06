@@ -49,6 +49,7 @@ urlpatterns = [
     ###
     re_path('server_on/(?P<project_id>.+)/', server_on),  # 启用服务
     re_path('server_off/(?P<project_id>.+)/', server_off),  # 禁用服务
+    path('get_catch_log/',get_catch_log),
 
 
 ]

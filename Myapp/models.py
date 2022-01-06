@@ -7,6 +7,7 @@ class DB_project(models.Model):
     run_counts=models.IntegerField(default=0)
     mocks_counts=models.IntegerField(default=0)
     state=models.BooleanField(default= False) #服务状态
+    catch_log=models.TextField(default='[]')
     def __str__(self):
         return '项目名字是'+self.name
 

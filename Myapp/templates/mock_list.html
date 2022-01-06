@@ -3,56 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <title>项目详情页</title>
-{#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
+    {#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
     <link rel="stylesheet" href="/static/lightbox/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/static/lightbox/node_modules/prismjs/themes/prism-tomorrow.css"/>
     <link rel="shortcut icon" href="/static/bitbug_favicon.ico">
 
     <style>
-        th{ text-align: center}
-        td{ text-align: center}
+        th {
+            text-align: center
+        }
+
+        td {
+            text-align: center
+        }
+
+        .catch_div {
+            background-color: #606963;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            min-height: 500px;
+            box-shadow: 4px -4px 8px #8c8c8c;
+        }
+
+        .catch_in {
+            margin: 5px;
+            width: 50%;
+            padding: 5px;
+            border: 0;
+
+        }
+
+        .catch_btn {
+            margin-top: 5px;
+            border-radius: 2px;
+            height: 34px;
+            background-color: #8c8c8c;
+        }
+
+        .catch_radio {
+            padding-left: 5px;
+
+        }
     </style>
 </head>
 <body>
 {% include 'menu.html' %}
 <table class="table table-bordered table-condensed table-striped" style="width: 80%;margin-left: 10%;">
     <thead style="background-color: #2d2f2f;color: white">
-        <tr>
-            <th>mock单元标题</th>
-            <th>状态</th>
-            <th style="min-width: 200px;">操作</th>
-        </tr>
+    <tr>
+        <th>mock单元标题</th>
+        <th>状态</th>
+        <th style="min-width: 200px;">操作</th>
+    </tr>
     </thead>
     <tbody>
-        {% for i in mocks %}
-            <tr>
-                <td style="max-width: 500px;white-space:nowrap;overflow-x:auto;">
-                    {{ i.name }}
-                </td>
-                <td id="state_{{ i.id }}">
-                    {{ i.state }}
-                </td>
-                <td>
-{#                    <a href="/mock_on/?mock_id={{ i.id}}">启用</a>#}
-                    <a href="/mock_on/{{ i.id}}/">启用</a>
-                    <a href="/mock_off/{{ i.id}}/">弃用</a>
-                    <a href="javascript:mock_set({{ i.id}})">设置</a>
-                    <a href="javascript:del_mock({{ i.id }})">删除</a>
-{#                    <a href="/del_mock/{{ i.id }}/">删除</a>#}
-                </td>
+    {% for i in mocks %}
+        <tr>
+            <td style="max-width: 500px;white-space:nowrap;overflow-x:auto;">
+                {{ i.name }}
+            </td>
+            <td id="state_{{ i.id }}">
+                {{ i.state }}
+            </td>
+            <td>
+                {#                    <a href="/mock_on/?mock_id={{ i.id}}">启用</a>#}
+                <a href="/mock_on/{{ i.id }}/">启用</a>
+                <a href="/mock_off/{{ i.id }}/">弃用</a>
+                <a href="javascript:mock_set({{ i.id }})">设置</a>
+                <a href="javascript:del_mock({{ i.id }})">删除</a>
+                {#                    <a href="/del_mock/{{ i.id }}/">删除</a>#}
+            </td>
 
-            </tr>
-            <script>
-                color_state=document.getElementById('state_{{ i.id }}')
-                if('{{ i.state }}'=='True'){
-                    color_state.style.color='green'
-                }else{
-                    color_state.style.color='red'
-                }
-            </script>
-            {% empty %}
-            <div style="line-height:50px;height:50px;background-color:wheat;position: absolute;top:300px ;width: 100%;text-align: center"><strong>没有内容</strong></div>
-        {% endfor %}
+        </tr>
+        <script>
+            color_state = document.getElementById('state_{{ i.id }}')
+            if ('{{ i.state }}' == 'True') {
+                color_state.style.color = 'green'
+            } else {
+                color_state.style.color = 'red'
+            }
+        </script>
+    {% empty %}
+        <div style="line-height:50px;height:50px;background-color:wheat;position: absolute;top:300px ;width: 100%;text-align: center">
+            <strong>没有内容</strong></div>
+    {% endfor %}
     </tbody>
 </table>
 <script>
@@ -61,7 +96,7 @@
             title: "请确认删除", body: "你确定删除吗?", textTrue: "确定", textFalse: "取消",
             onSubmit: function (result) {
                 if (result) {
-                    $.get('/del_mock/'+mock_id+'/',{},function (ret) {
+                    $.get('/del_mock/' + mock_id + '/', {}, function (ret) {
                         document.location.reload()
                     })
                 } else {
@@ -77,8 +112,8 @@
 <script src="/static/lightbox/js/bootstrap-show-modal.js"></script>
 <script src="/static/lightbox/node_modules/prismjs/prism.js"></script>
 <script>
-    function project_set(){
-         $.showModal({
+    function project_set() {
+        $.showModal({
             title: '请设置项目',
             body:
                 '<form><div class="form-group row">' +
@@ -94,10 +129,10 @@
                     var $form = $(modal.element).find("form")
 
                     // 发送请求给后端
-                    $.get('/save_project/',{
-                        "new_name":$form.find("#project_name_input").val(),
-                        "project_id":'{{ project_id }}'
-                    },function (ret){
+                    $.get('/save_project/', {
+                        "new_name": $form.find("#project_name_input").val(),
+                        "project_id": '{{ project_id }}'
+                    }, function (ret) {
                         modal.hide()
                         document.location.reload()
                     })
@@ -105,95 +140,168 @@
             }
         })
     }
-    function mock_set(mock_id){
-        $.get('/get_mock/',{
-            'mock_id':mock_id
-        },function (ret){
+
+    function mock_set(mock_id) {
+        $.get('/get_mock/', {
+            'mock_id': mock_id
+        }, function (ret) {
             $.showModal({
                 title: '请设置mock单元',
                 body:
-                '<form>' +
-                '<div class="form-group row">' +
-                '<div class="col-3"><label for="text" class="col-form-label">mock名称</label></div>' +
-                '<div class="col-9"><input type="text" class="form-control" value="'+ret.mock.name+'" id="mock_name"/></div>' +
-                '</div>' +
-                '<div class="form-group row">' +
-                '<div class="col-3"><label for="text" class="col-form-label">url关键字</label></div>' +
-                '<div class="col-9"><input type="text" class="form-control" value="'+ret.mock.catch_url+'" id="catch_url" placeholder="写url内关键字"/></div>' +
-                '</div>'+
-                '<div class="form-group row">' +
-                '<div class="col-3"><label for="text" class="col-form-label">时间控制</label></div>' +
-                '<div class="col-9"><input type="text" class="form-control" value="'+ret.mock.mock_time+'" id="mock_time" placeholder="时间必须为数字，不能为0或负数"/></div>' +
-                '</div>'+
-                '<div class="form-group row">' +
-                '<div class="col-3"><label for="text" class="col-form-label">返回头</label></div>' +
-                '<div class="col-9"><textarea  id="response_headers" class="form-control" rows="3" placeholder=r"必须是json格式如：{"a"：1，"b":"bb"}">'+ret.mock.response_headers+'</textarea></div>' +
-                '</div>'+
-                '<div class="form-group row">' +
-                '<div class="col-3"><label for="text" class="col-form-label">模式选择</label></div>' +
-                '<div class="col-9"><select  class="form-control" name="" id="model"><option value="Interceptor" >拦截模式</option><option value="Release">放行模式</option></select></div>' +
-                '</div>' +
-                '<div class="form-group row" id="display_fx_0">' +
-                '<div class="col-3"><label for="text" class="col-form-label">返回值更新策略</label></div>' +
-                '<div class="col-9"><textarea id="mock_response_body" rows="3" class="form-control"  placeholder="每行一个规则，具体规则如下:' +
-                    '字符串替换使用=>,json替换使用=">'+ret.mock.mock_response_body+'</textarea></div>' +
-                '</div>'+
-                '<div class="form-group row" id="display_lj_0">' +
-                '<div class="col-3"><label for="text" class="col-form-label">http状态码</label></div>' +
-                '<div class="col-9"><input type="text" class="form-control" value="'+ret.mock.state_code+'" id="state_code" placeholder="必须写整形且存在的http状态码" /></div>' +
-                '</div>' +
-                '<div class="form-group row" id="display_lj_1">' +
-                '<div class="col-3"><label for="text" class="col-form-label">返回体写死</label></div>' +
-                '<div class="col-9"><textarea id="mock_response_body_lj" class="form-control" rows="3" placeholder="写死的返回值" >'+ret.mock.mock_response_body_lj+' </textarea></div>' +
-                '</div>'+
-                '</form>',
-            footer: '<button type="button" class="btn btn-link" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary">保存</button>',
-            onCreate: function (modal) {
-                // create event handler for form submit and handle values
-                $(modal.element).on("click", "button[type='submit']", function (event) {
-                    event.preventDefault()
-                    var $form = $(modal.element).find("form")
-                    // 发送请求给后端
-                    $.get('/save_mock/',{
-                        "mock_id":mock_id,
-                        "mock_name":$form.find("#mock_name").val(),
-                        "catch_url":$form.find("#catch_url").val(),
-                        "mock_time":$form.find("#mock_time").val(),
-                        "model":$form.find("#model").val(),
-                        "response_headers":$form.find("#response_headers").val(),
-                        "state_code":$form.find("#state_code").val(),
-                        "mock_response_body_lj":$form.find("#mock_response_body_lj").val(),
-                        "mock_response_body":$form.find("#mock_response_body").val(),
-                    },function (ret){
-                        modal.hide()
-                        document.location.reload()
+                    '<form>' +
+                    '<div class="form-group row">' +
+                    '<div class="col-3"><label for="text" class="col-form-label">mock名称</label></div>' +
+                    '<div class="col-9"><input type="text" class="form-control" value="' + ret.mock.name + '" id="mock_name"/></div>' +
+                    '</div>' +
+                    '<div class="form-group row">' +
+                    '<div class="col-3"><label for="text" class="col-form-label">url关键字</label></div>' +
+                    '<div class="col-9"><input type="text" class="form-control" value="' + ret.mock.catch_url + '" id="catch_url" placeholder="写url内关键字"/></div>' +
+                    '</div>' +
+                    '<div class="form-group row">' +
+                    '<div class="col-3"><label for="text" class="col-form-label">时间控制</label></div>' +
+                    '<div class="col-9"><input type="text" class="form-control" value="' + ret.mock.mock_time + '" id="mock_time" placeholder="时间必须为数字，不能为0或负数"/></div>' +
+                    '</div>' +
+                    '<div class="form-group row">' +
+                    '<div class="col-3"><label for="text" class="col-form-label">返回头</label></div>' +
+                    '<div class="col-9"><textarea  id="response_headers" class="form-control" rows="3" placeholder=r"必须是json格式如：{"a"：1，"b":"bb"}">' + ret.mock.response_headers + '</textarea></div>' +
+                    '</div>' +
+                    '<div class="form-group row">' +
+                    '<div class="col-3"><label for="text" class="col-form-label">模式选择</label></div>' +
+                    '<div class="col-9"><select  class="form-control" name="" id="model"><option value="Interceptor" >拦截模式</option><option value="Release">放行模式</option></select></div>' +
+                    '</div>' +
+                    '<div class="form-group row" id="display_fx_0">' +
+                    '<div class="col-3"><label for="text" class="col-form-label">返回值更新策略</label></div>' +
+                    '<div class="col-9"><textarea id="mock_response_body" rows="3" class="form-control"  placeholder="每行一个规则，具体规则如下:' +
+                    '字符串替换使用=>,json替换使用=">' + ret.mock.mock_response_body + '</textarea></div>' +
+                    '</div>' +
+                    '<div class="form-group row" id="display_lj_0">' +
+                    '<div class="col-3"><label for="text" class="col-form-label">http状态码</label></div>' +
+                    '<div class="col-9"><input type="text" class="form-control" value="' + ret.mock.state_code + '" id="state_code" placeholder="必须写整形且存在的http状态码" /></div>' +
+                    '</div>' +
+                    '<div class="form-group row" id="display_lj_1">' +
+                    '<div class="col-3"><label for="text" class="col-form-label">返回体写死</label></div>' +
+                    '<div class="col-9"><textarea id="mock_response_body_lj" class="form-control" rows="3" placeholder="写死的返回值" >' + ret.mock.mock_response_body_lj + ' </textarea></div>' +
+                    '</div>' +
+                    '</form>',
+                footer: '<button type="button" class="btn btn-link" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary">保存</button>',
+                onCreate: function (modal) {
+                    // create event handler for form submit and handle values
+                    $(modal.element).on("click", "button[type='submit']", function (event) {
+                        event.preventDefault()
+                        var $form = $(modal.element).find("form")
+                        // 发送请求给后端
+                        $.get('/save_mock/', {
+                            "mock_id": mock_id,
+                            "mock_name": $form.find("#mock_name").val(),
+                            "catch_url": $form.find("#catch_url").val(),
+                            "mock_time": $form.find("#mock_time").val(),
+                            "model": $form.find("#model").val(),
+                            "response_headers": $form.find("#response_headers").val(),
+                            "state_code": $form.find("#state_code").val(),
+                            "mock_response_body_lj": $form.find("#mock_response_body_lj").val(),
+                            "mock_response_body": $form.find("#mock_response_body").val(),
+                        }, function (ret) {
+                            modal.hide()
+                            document.location.reload()
+                        })
                     })
-                })
-            }
-        })
-            document.getElementById('model').value=ret.mock.model;
+                }
+            })
+            document.getElementById('model').value = ret.mock.model;
+
             //负责控制输入的显示和隐藏
-            function change_model(model){
-                if (model=='Interceptor'){
-                    document.getElementById('display_lj_0').style.display='';
-                    document.getElementById('display_lj_1').style.display='';
-                    document.getElementById('display_fx_0').style.display='none';
-                }else{
-                    document.getElementById('display_lj_0').style.display='none';
-                    document.getElementById('display_lj_1').style.display='none';
-                    document.getElementById('display_fx_0').style.display='';
+            function change_model(model) {
+                if (model == 'Interceptor') {
+                    document.getElementById('display_lj_0').style.display = '';
+                    document.getElementById('display_lj_1').style.display = '';
+                    document.getElementById('display_fx_0').style.display = 'none';
+                } else {
+                    document.getElementById('display_lj_0').style.display = 'none';
+                    document.getElementById('display_lj_1').style.display = 'none';
+                    document.getElementById('display_fx_0').style.display = '';
                 }
             }
+
             //打开弹窗时默认调用
             change_model(ret.mock.model)
             //当select模式选择变更后，调用
-            $("#model").change(function (){
+            $("#model").change(function () {
                 change_model(document.getElementById('model').value)
             })
-         })
+        })
     }
 </script>
 
+<div id="catch_div" class="catch_div" style="display: none">
+    <textare id="request_data" placeholder="requset_data" class="catch_in" rows="10"
+             style="float: right;width: -webkit-calc(50% - 20%)"></textare>
 
+    <input type="text" id="filter_str" placeholder="关键字" class="catch_in" style="float: left;width: 30%">
+    <button onclick="close_catch()" class="catch_btn" style="width: -webkit-calc(5% - 10px);"><strong>close</strong>
+    </button>
+    <button onclick="clear_catch()" class="catch_btn" style="width: -webkit-calc(5% - 5px);"><strong>clear</strong>
+    </button>
+    <button class="catch_btn" style="width: -webkit-calc(10% );"><strong>import</strong></button>
+    <div id="catch_log" class="catch_in"
+         style="white-space: nowrap;overflow-y:auto;max-height: 463px;min-height: 463px;background-color: white;float: left"></div>
+    <textare id="response_data" placeholder="response_data" class="catch_in" rows="10"
+             style="float: right;width: -webkit-calc(50% - 20%)"></textare>
+
+</div>
+<script>
+    function show_catch() {
+        //打开界面
+        $('#catch_div').css('display', 'block')
+        //实时读取
+        setInterval("函数名", 1000);
+    }
+
+    function get_catch_log() {
+        $.get("/get_catch_log/", {
+            "project_id":{{ project_id }}
+        }, function (ret) {
+            //生成记录
+            var catch_logs = ret.res;
+            var mother = document.getElementById('catch_log');
+            for (var cl = 0; cl < catch_logs.length; cl++) {
+                if (catch_logs[cl].url.indexof(document.getElementById("filter_str").value) == -1) {
+                    continue
+                }
+                var d = document.createElement('div');
+                d.classNme = 'catch_radio';
+                d.abcd = cl;
+                d.onclick = function () {
+                    document.getElementById('request_data').value = "请求方式" + catch_logs[this.abcd].method + "\n\n【url】" + catch_logs[this.abcd].url;
+                    document.getElementById('response_data').value = "响应头" + JSON.stringify(catch_logs[this.abcd].response_headers) + "\n\n【响应体】" + catch_logs[this.abcd].response_content;
+
+                };
+                var l = document.createElement('label');
+                l.style.height = '20px';
+                l.style.lineHeight = '20px';
+                var i = document.createElement('input');
+                i.type = 'radio';
+                i.name = 'radio_catch_log';
+                l.appendChild(i)
+                l.insertAdjacentText('beforeend', ' ' + '【' + catch_logs[cl].method + '】' + catch_logs[cl].url)
+                d.appendChild(l)
+                mother.appendChild(d)
+
+            }
+
+        })
+
+    }
+
+    function clear_catch() {
+        document.getElementById('request_data').value = ''
+        document.getElementById('response_data').value = ''
+        document.getElementById('catch_log').innerHTML = ''
+    }
+
+    function close_catch() {
+        document.location.reload()
+    }
+
+</script>
 </body>
 </html>

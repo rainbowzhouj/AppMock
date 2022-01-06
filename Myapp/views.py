@@ -139,10 +139,10 @@ def mock_list(request,project_id,):
     res = {}
     res['mocks'] = a
     res['buttons'] = [{"name": "新增单元", "href": "/add_mock/%s/"%project.id, "icon": "plus"},
-               {"name": "抓包导入", "href": "", "icon": "folder"},
-               {"name": "项目设置", "href": "javascript:project_set()", "icon": "tasks"},
-               {"name": "启动服务", "href": "/server_on/%s/"%project_id, "icon": "check"},
-               {"name": "关闭服务", "href": "/server_off/%s/"%project_id, "icon": "ban"},
+               {"name": "抓包导入", "href": "javascript:show_catch()", "icon": "hand-o-right"},
+               {"name": "项目设置", "href": "javascript:project_set()", "icon": "edit"},
+               {"name": "启动服务", "href": "/server_on/%s/"%project_id, "icon": "hourglass-start"},
+               {"name": "关闭服务", "href": "/server_off/%s/"%project_id, "icon": "hourglass-end"},
                ]
     res['page_name'] = "项目详情页:【%s】"%project.name+'  【host】'+ip+"【port】: "+str(9000+int(project_id))
     res['project_state']= '服务状态 '+str(project.state)
@@ -230,3 +230,13 @@ def server_off(request,project_id):
 # def demo_span(request):
 #     return HttpResponse('12345677')
     # return HttpResponse({"a":{"b":{"c":21,"m":2}}},content_type='application/json')
+
+# huo
+def get_catch_log(request):
+    project_id=request.GET['project_id']
+    project=DB_project.objects.filter(id=project_id)
+    catch_log=eval(project[0].catch_log)
+    ret={"res":catch_log}
+    # 删除原有记录
+    project.update(catch_log='[]')
+    return HttpResponseRedirect(json.dumps(ret),content_type='application/json')
