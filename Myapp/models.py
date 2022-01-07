@@ -8,6 +8,9 @@ class DB_project(models.Model):
     mocks_counts=models.IntegerField(default=0)
     state=models.BooleanField(default= False) #服务状态
     catch_log=models.TextField(default='[]')
+    catch=models.BooleanField(default=False)# 抓日志的开关
+    black_hosts=models.CharField(max_length=500,null=True,blank=True,default='')# 黑名单
+    white_hosts=models.CharField(max_length=500,null=True,blank=True,default='')# 白名单，只抓白名单的东西
     def __str__(self):
         return '项目名字是'+self.name
 

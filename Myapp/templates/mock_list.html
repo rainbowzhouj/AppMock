@@ -118,7 +118,15 @@
             body:
                 '<form><div class="form-group row">' +
                 '<div class="col-3"><label for="text" class="col-form-label">项目名称</label></div>' +
-                '<div class="col-9"><input type="text" class="form-control" id="project_name_input"/></div>' +
+                '<div class="col-9"><input type="text" class="form-control" id="project_name_input" value="{{ project.name }}"/></div>' +
+                '</div>' +
+                '<div class="form-group row">' +
+                '<div class="col-3"><label for="text" class="col-form-label">黑名单</label></div>' +
+                '<div class="col-9"><input type="text" class="form-control" id="black_hosts" placeholder="用英文逗号隔开，黑名单不被mock" value="{{ project.black_hosts }}/></div>' +
+                '</div>' +
+                '<div class="form-group row">' +
+                '<div class="col-3"><label for="text" class="col-form-label">白名单</label></div>' +
+                '<div class="col-9"><input type="text" class="form-control" id="white_hosts" placeholder="用英文逗号隔开，如果不为空，只白名单mock" value="{{ project.white_hosts }}/></div>' +
                 '</div>' +
                 '</form>',
             footer: '<button type="button" class="btn btn-link" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary">保存</button>',
@@ -131,6 +139,8 @@
                     // 发送请求给后端
                     $.get('/save_project/', {
                         "new_name": $form.find("#project_name_input").val(),
+                        "black_hosts": $form.find("#black_hosts").val(),
+                        "white_hosts": $form.find("#white_hosts").val(),
                         "project_id": '{{ project_id }}'
                     }, function (ret) {
                         modal.hide()
@@ -243,7 +253,7 @@
     </button>
     <button class="catch_btn" style="width: -webkit-calc(10% );"><strong>import</strong></button>
     <div id="catch_log" class="catch_in"
-         style="white-space: nowrap;overflow-y:auto;max-height: 463px;min-height: 463px;background-color: white;float: left"></div>
+         style="white-space: nowrap;overflow-y:auto;max-height: 463px;min-height: 463px;background-color: white;float: right"></div>
     <textare id="response_data" placeholder="response_data" class="catch_in" rows="10"
              style="float: right;width: -webkit-calc(50% - 20%)"></textare>
 
@@ -258,7 +268,7 @@
 
     function get_catch_log() {
         $.get("/get_catch_log/", {
-            "project_id":{{ project_id }}
+            "project_id":"{{ project_id }}"
         }, function (ret) {
             //生成记录
             var catch_logs = ret.res;
@@ -272,7 +282,7 @@
                 d.abcd = cl;
                 d.onclick = function () {
                     document.getElementById('request_data').value = "请求方式" + catch_logs[this.abcd].method + "\n\n【url】" + catch_logs[this.abcd].url;
-                    document.getElementById('response_data').value = "响应头" + JSON.stringify(catch_logs[this.abcd].response_headers) + "\n\n【响应体】" + catch_logs[this.abcd].response_content;
+                    document.getElementById('response_data').value = "响应头" + (catch_logs[this.abcd].response_headers) + "\n\n【响应体】" + catch_logs[this.abcd].response_content;
 
                 };
                 var l = document.createElement('label');

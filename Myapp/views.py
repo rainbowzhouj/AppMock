@@ -41,10 +41,13 @@ def add_project(request):
     shutil.copy('Myapp/mitm_edits/mitm_edit.py','Myapp/mitm_edits/%s_mitm_edit.py'%project.id)
     return HttpResponseRedirect('/project_list/')
 
+#保存项目
 def save_project(request):
     new_name=request.GET['new_name']
+    white_hosts=request.GET['white_hosts']
+    black_hosts=request.GET['black_hosts']
     project_id=request.GET['project_id']
-    DB_project.objects.filter(id=project_id).update(name=new_name)
+    DB_project.objects.filter(id=project_id).update(name=new_name,white_hosts=white_hosts,black_hosts=black_hosts)
     return HttpResponse('')
 
 #获取项目数据
@@ -147,6 +150,8 @@ def mock_list(request,project_id,):
     res['page_name'] = "项目详情页:【%s】"%project.name+'  【host】'+ip+"【port】: "+str(9000+int(project_id))
     res['project_state']= '服务状态 '+str(project.state)
     res['project_id']=project_id
+    res['project']=project
+
     return render(request,'mock_list.html',res)
 
 # 新增mock单元
@@ -231,10 +236,11 @@ def server_off(request,project_id):
 #     return HttpResponse('12345677')
     # return HttpResponse({"a":{"b":{"c":21,"m":2}}},content_type='application/json')
 
-# huo
+# 获取抓包日志  每秒运行一次
 def get_catch_log(request):
     project_id=request.GET['project_id']
     project=DB_project.objects.filter(id=project_id)
+    project.update(catch=True)
     catch_log=eval(project[0].catch_log)
     ret={"res":catch_log}
     # 删除原有记录
