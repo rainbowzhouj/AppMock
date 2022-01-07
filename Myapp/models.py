@@ -11,6 +11,7 @@ class DB_project(models.Model):
     catch=models.BooleanField(default=False)# 抓日志的开关
     black_hosts=models.CharField(max_length=500,null=True,blank=True,default='')# 黑名单
     white_hosts=models.CharField(max_length=500,null=True,blank=True,default='')# 白名单，只抓白名单的东西
+    catch_time=models.CharField(max_length=20,null=True,blank=True,default='')#最后一次获取抓包时间戳
     def __str__(self):
         return '项目名字是'+self.name
 

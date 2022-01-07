@@ -3,6 +3,8 @@
 # @Author  : rainbowzhouj
 # @FileName: mitm_edit.py
 # @Software: PyCharm
+import threading
+import time
 
 from mitmproxy import http
 import json
@@ -15,8 +17,38 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE","AppMock.settings")
 django.setup()
 from Myapp.models import *
 
+def filter(flow):
+    #黑白名单
+    project_id = os.path.basename(__file__).split('_')[0]  # 切分获取项目id
+    project = DB_project.objects.filter(id=project_id)
+    if project.white_hosts !='':
+        if flow.request.url not in project.white_hosts.split(','):
+            return False
+    if project.black_hosts !='':
+        if flow.request.url in project.black_hosts.split(','):
+            return False
+
+def write_catch_log(flow):
+    project_id = os.path.basename(__file__).split('_')[0]  # 切分获取项目id
+    project=DB_project.objects.filter(id=project_id)[0]
+    #读取开关
+    catch=project[0].catch
+    if catch==True:
+        old=eval(project[0].catch_log)
+        tmp_header={}
+        for k,v in flow.response.headers.items():
+            tmp_header[k]=v
+        tmp={"method":flow.request.method,
+             "url":flow.request.url,
+             "response_headers":json.dumps(tmp_header),
+             "response_content":flow.response.text}
+        old.append(tmp)
+        project.update(catch_log=str(old))
 
 def request(flow):
+    #先判断是否为黑白名单
+    if filter(flow)==False:
+        return
     # 拦截模式
     project_id=os.path.basename(__file__).split('_')[0] # 切分获取项目id
     mocks = DB_mock.objects.filter(project_id=project_id, state=True)
@@ -32,6 +64,9 @@ def request(flow):
 
 
 def response(flow):
+    # 先判断是否为黑白名单
+    if filter(flow) == False:
+        return
     project_id = os.path.basename(__file__).split('_')[0] #切割取出项目id
     mocks = DB_mock.objects.filter(project_id=project_id, state=True)# 筛选出项目id且单元状态是启动的服务
     for m in mocks:
@@ -70,4 +105,23 @@ def response(flow):
                         flow.response.text = json.dumps(new)  # 重新转换为json
                     else:  # 不符合规则
                         ...
+                #更新返回头
+                for key,value in json.loads(m.response_headers).items():
+                    flow.response.headers[str(key)]=str(value)
+            ### 时间控制
+            try:# 0,字符串，特殊符号
+                mock_time=float(m.mock_time)
+            except:mock_time=0
+            passtime=float(time.time()) - float(flow.request.timestamp_start)
+            if mock_time>passtime:
+                cha = mock_time - passtime
+                time.sleep(cha)
             break
+
+    #写入log
+    t=threading.Thread(target=write_catch_log,args=[flow,])
+    t.setDaemon(True)
+    t.start()
+
+
+

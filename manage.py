@@ -1,8 +1,16 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
-import os
-import sys
+import threading
+import time
 
+import django
+import os, sys
+
+from Myapp.models import DB_project
+
+sys.path.append('/Users/zhoujing/PycharmProjects/AppMock')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE","AppMock.settings")
+django.setup()
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AppMock.settings')
@@ -16,6 +24,23 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
+def monitor_thread():
+    '巡逻官线程'
+    while True:
+        time.sleep(1800)
+        projects=DB_project.objects.all()
+        for p in projects:
+            if p.catch==True:
+                cha=int(time.time())-int(p.catch_time)
+                if cha>10:
+                    p.catch=False
+                    p.save()
+
+
+
 
 if __name__ == '__main__':
+    t = threading.Thread(target=monitor_thread)
+    t.setDaemon(True)
+    t.start()
     main()

@@ -6,6 +6,7 @@ import shutil
 import socket
 import subprocess
 import threading
+import time
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -244,7 +245,7 @@ def get_catch_log(request):
     catch_log=eval(project[0].catch_log)
     ret={"res":catch_log}
     # 删除原有记录
-    project.update(catch_log='[]')
+    project.update(catch_log='[]',catch_time=str(time.time())[:10])
     return HttpResponseRedirect(json.dumps(ret),content_type='application/json')
 
 def import_catch(request):
