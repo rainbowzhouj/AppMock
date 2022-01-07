@@ -246,3 +246,15 @@ def get_catch_log(request):
     # 删除原有记录
     project.update(catch_log='[]')
     return HttpResponseRedirect(json.dumps(ret),content_type='application/json')
+
+def import_catch(request):
+    project_id=request.POST['project_id']
+    chose_catch=json.loads(request.POST['chose_catch'])
+    DB_mock.objects.create(project_id=project_id,
+                           name=chose_catch['url'][:500],
+                           catch_url='/'.join(chose_catch['url'].split('?')[0].split('/')[3:]),
+                           response_headers=chose_catch['response_headers'],
+                           mock_response_body_lj=chose_catch['mock_response_body_lj']
+
+                           )
+    return HttpResponseRedirect('')

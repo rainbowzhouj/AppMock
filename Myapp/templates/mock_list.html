@@ -249,18 +249,19 @@
     <textare id="request_data" placeholder="requset_data" class="catch_in" rows="10"
              style="float: right;width: -webkit-calc(50% - 20%)"></textare>
 
-    <input type="text" id="filter_str" placeholder="关键字" class="catch_in" style="float: left;width: 30%">
+    <input type="text" id="filter_str" placeholder="请输入筛选的关键字" class="catch_in" style="float: left;width: 30%">
     <button onclick="close_catch()" class="catch_btn" style="width: -webkit-calc(5% - 10px);"><strong>close</strong>
     </button>
     <button onclick="clear_catch()" class="catch_btn" style="width: -webkit-calc(5% - 5px);"><strong>clear</strong>
     </button>
-    <button class="catch_btn" style="width: -webkit-calc(10% );"><strong>import</strong></button>
+    <button onclick="import_catch()" class="catch_btn" style="width: -webkit-calc(10% );"><strong>import</strong></button>
     <div id="catch_log" class="catch_in"
          style="white-space: nowrap;overflow-y:auto;max-height: 463px;min-height: 463px;background-color: white;float: right"></div>
     <textare id="response_data" placeholder="response_data" class="catch_in" rows="10"
              style="float: right;width: -webkit-calc(50% - 20%)"></textare>
 
 </div>
+<input type="text" id ="chose_catch" style="display: none">
 <script>
     function show_catch() {
         //打开界面
@@ -284,6 +285,7 @@
                 d.classNme = 'catch_radio';
                 d.abcd = cl;
                 d.onclick = function () {
+                    document.getElementById('chose_catch').value=JSON.stringify(catch_logs[this.abcd]);
                     document.getElementById('request_data').value = "请求方式" + catch_logs[this.abcd].method + "\n\n【url】" + catch_logs[this.abcd].url;
                     document.getElementById('response_data').value = "响应头" + (catch_logs[this.abcd].response_headers) + "\n\n【响应体】" + catch_logs[this.abcd].response_content;
 
@@ -313,6 +315,19 @@
 
     function close_catch() {
         document.location.reload()
+    }
+    function import_catch(){
+        if(chose_catch==''){
+            alert('请先选择一个请求记录！')
+            return
+        }
+        $.post('/import_catch/',{
+            "project_id":"{{ project_id }}",
+            "chose_catch":chose_catch
+        },function (ret) {
+            document.location.reload()
+        })
+
     }
 
 </script>
