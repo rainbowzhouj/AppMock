@@ -173,7 +173,7 @@
                     '</div>' +
                     '<div class="form-group row">' +
                     '<div class="col-3"><label for="text" class="col-form-label">返回头</label></div>' +
-                    '<div class="col-9"><textarea  id="response_headers" class="form-control" rows="3" placeholder=r"必须是json格式如：{"a"：1，"b":"bb"}">' + ret.mock.response_headers + '</textarea></div>' +
+                    '<div class="col-9"><textarea  id="response_headers" class="form-control" rows="3" placeholder=r"必须是json格式如：{"a"：1，"b":"bb"}"></textarea></div>' +
                     '</div>' +
                     '<div class="form-group row">' +
                     '<div class="col-3"><label for="text" class="col-form-label">模式选择</label></div>' +
@@ -182,7 +182,7 @@
                     '<div class="form-group row" id="display_fx_0">' +
                     '<div class="col-3"><label for="text" class="col-form-label">返回值更新策略</label></div>' +
                     '<div class="col-9"><textarea id="mock_response_body" rows="3" class="form-control"  placeholder="每行一个规则，具体规则如下:' +
-                    '字符串替换使用=>,json替换使用=">' + ret.mock.mock_response_body + '</textarea></div>' +
+                    '字符串替换使用=>,json替换使用="></textarea></div>' +
                     '</div>' +
                     '<div class="form-group row" id="display_lj_0">' +
                     '<div class="col-3"><label for="text" class="col-form-label">http状态码</label></div>' +
@@ -190,7 +190,7 @@
                     '</div>' +
                     '<div class="form-group row" id="display_lj_1">' +
                     '<div class="col-3"><label for="text" class="col-form-label">返回体写死</label></div>' +
-                    '<div class="col-9"><textarea id="mock_response_body_lj" class="form-control" rows="3" placeholder="写死的返回值" >' + ret.mock.mock_response_body_lj + ' </textarea></div>' +
+                    '<div class="col-9"><textarea id="mock_response_body_lj" class="form-control" rows="3" placeholder="写死的返回值" > </textarea></div>' +
                     '</div>' +
                     '</form>',
                 footer: '<button type="button" class="btn btn-link" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary">保存</button>',
@@ -234,6 +234,9 @@
 
             //打开弹窗时默认调用
             change_model(ret.mock.model)
+            document.getElementById('response_headers').innerText=ret.mock.response_headers;
+            document.getElementById('mock_response_body').innerText=ret.mock.mock_response_body;
+            document.getElementById('mock_response_body_lj').innerText=ret.mock.mock_response_body_lj;
             //当select模式选择变更后，调用
             $("#model").change(function () {
                 change_model(document.getElementById('model').value)
