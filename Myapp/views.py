@@ -262,12 +262,12 @@ def server_off(request, project_id):
 def get_catch_log(request):
     project_id = request.GET['project_id']
     project = DB_project.objects.filter(id=project_id)
-    project.update(catch=True)
-    catch_log = eval(project[0].catch_log)
-    ret = {"res": catch_log}
+    project.update(catch = True) #打开开关
+    catch_log = eval(project[0].catch_log) # 字符串列表类型
+    ret = {"res":catch_log}
     # 删除原有记录
-    project.update(catch_log='[]', catch_time=str(time.time())[:10])
-    return HttpResponse(json.dumps(ret), content_type='application/json')
+    project.update(catch_log='[]',catch_time=str(time.time())[:10])
+    return HttpResponse(json.dumps(ret),content_type='application/json')
 
 
 def import_catch(request):
@@ -276,7 +276,7 @@ def import_catch(request):
     DB_mock.objects.create(project_id=project_id,
                            name=chose_catch['url'][:500],
                            catch_url='/'.join(chose_catch['url'].split('?')[0].split('/')[3:]),
-                           response_headers=chose_catch['response_headers'],
-                           mock_response_body_lj=chose_catch['mock_response_body_lj']
+                           response_headers = chose_catch['response_headers'],
+                           mock_response_body_lj = chose_catch['response_content']
                            )
     return HttpResponse('')
