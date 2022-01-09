@@ -2,15 +2,12 @@
 """Django's command-line utility for administrative tasks."""
 import threading
 import time
-
 import django
 import os, sys
-
-from Myapp.models import DB_project
-
 sys.path.append('/Users/zhoujing/PycharmProjects/AppMock')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE","AppMock.settings")
 django.setup()
+from Myapp.models import *
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AppMock.settings')
@@ -33,6 +30,7 @@ def monitor_thread():
             if p.catch==True:
                 cha=int(time.time())-int(p.catch_time)
                 if cha>10:
+                    print("发现一个没关的项目",p.name)
                     p.catch=False
                     p.save()
 

@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>项目详情页</title>
-    {#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
     <link rel="stylesheet" href="/static/lightbox/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/static/lightbox/node_modules/prismjs/themes/prism-tomorrow.css"/>
     <link rel="shortcut icon" href="/static/bitbug_favicon.ico">
@@ -16,9 +15,11 @@
         td {
             text-align: center
         }
-
+        button {
+            margin-bottom: 0.5em;
+        }
         .catch_div {
-            background-color: #606963;
+            background-color: #e6e6ea;
             position: fixed;
             bottom: 0;
             width: 100%;
@@ -38,11 +39,12 @@
             margin-top: 5px;
             border-radius: 2px;
             height: 34px;
-            background-color: #8c8c8c;
+            background-color: white;
         }
 
         .catch_radio {
             padding-left: 5px;
+            white-space: nowrap;overflow-x: auto;
 
         }
     </style>
@@ -67,14 +69,11 @@
                 {{ i.state }}
             </td>
             <td>
-                {#                    <a href="/mock_on/?mock_id={{ i.id}}">启用</a>#}
                 <a href="/mock_on/{{ i.id }}/">启用</a>
                 <a href="/mock_off/{{ i.id }}/">弃用</a>
                 <a href="javascript:mock_set({{ i.id }})">设置</a>
                 <a href="javascript:del_mock({{ i.id }})">删除</a>
-                {#                    <a href="/del_mock/{{ i.id }}/">删除</a>#}
             </td>
-
         </tr>
         <script>
             color_state = document.getElementById('state_{{ i.id }}')
@@ -84,7 +83,7 @@
                 color_state.style.color = 'red'
             }
         </script>
-    {% empty %}
+        {% empty %}
         <div style="line-height:50px;height:50px;background-color:wheat;position: absolute;top:300px ;width: 100%;text-align: center">
             <strong>没有内容</strong></div>
     {% endfor %}
@@ -93,7 +92,7 @@
 <script>
     function del_mock(mock_id) {
         $.showConfirm({
-            title: "请确认删除", body: "你确定删除吗?", textTrue: "确定", textFalse: "取消",
+            title: "请确认删除", body: "确定要删除"+mock_id+"么？", textTrue: "确定", textFalse: "取消",
             onSubmit: function (result) {
                 if (result) {
                     $.get('/del_mock/' + mock_id + '/', {}, function (ret) {
@@ -122,11 +121,11 @@
                 '</div>' +
                 '<div class="form-group row">' +
                 '<div class="col-3"><label for="text" class="col-form-label">黑名单</label></div>' +
-                '<div class="col-9"><input type="text" class="form-control" id="black_hosts" placeholder="用英文逗号隔开，黑名单不被mock" value="{{ project.black_hosts }}/></div>' +
+                '<div class="col-9"><input type="text" class="form-control" id="black_hosts" placeholder="用英文逗号隔开，黑名单不被mock" value="{{ project.black_hosts }}"/></div>' +
                 '</div>' +
                 '<div class="form-group row">' +
                 '<div class="col-3"><label for="text" class="col-form-label">白名单</label></div>' +
-                '<div class="col-9"><input type="text" class="form-control" id="white_hosts" placeholder="用英文逗号隔开，如果不为空，只白名单mock" value="{{ project.white_hosts }}/></div>' +
+                '<div class="col-9"><input type="text" class="form-control" id="white_hosts" placeholder="用英文逗号隔开，如果不为空，只白名单mock" value="{{ project.white_hosts }}"/></div>' +
                 '</div>' +
                 '</form>',
             footer: '<button type="button" class="btn btn-link" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary">保存</button>',
@@ -246,19 +245,18 @@
 </script>
 
 <div id="catch_div" class="catch_div" style="display: none">
-    <textare id="request_data" placeholder="requset_data" class="catch_in" rows="10"
-             style="float: right;width: -webkit-calc(50% - 20%)"></textare>
-
+    <textarea id="request_data" placeholder="request_data" class="catch_in" rows="10"
+             style="float: right;width: -webkit-calc(50% - 20px)"></textarea>
     <input type="text" id="filter_str" placeholder="请输入筛选的关键字" class="catch_in" style="float: left;width: 30%">
     <button onclick="close_catch()" class="catch_btn" style="width: -webkit-calc(5% - 10px);"><strong>close</strong>
     </button>
     <button onclick="clear_catch()" class="catch_btn" style="width: -webkit-calc(5% - 5px);"><strong>clear</strong>
     </button>
-    <button onclick="import_catch()" class="catch_btn" style="width: -webkit-calc(10% );"><strong>import</strong></button>
+    <button onclick="import_catch()" class="catch_btn" style="width: -webkit-calc(10%);"><strong>import</strong></button>
     <div id="catch_log" class="catch_in"
-         style="white-space: nowrap;overflow-y:auto;max-height: 463px;min-height: 463px;background-color: white;float: right"></div>
-    <textare id="response_data" placeholder="response_data" class="catch_in" rows="10"
-             style="float: right;width: -webkit-calc(50% - 20%)"></textare>
+         style="white-space: nowrap;overflow-y:auto;max-height: 463px;min-height: 463px;background-color: white;float: left"></div>
+    <textarea id="response_data" placeholder="response_data" class="catch_in" rows="10"
+             style="float: right;width: -webkit-calc(50% - 20px)"></textarea>
 
 </div>
 <input type="text" id ="chose_catch" style="display: none">
@@ -267,9 +265,8 @@
         //打开界面
         $('#catch_div').css('display', 'block')
         //实时读取
-        setInterval("函数名", 1000);
+        setInterval("get_catch_log()", 1000);
     }
-
     function get_catch_log() {
         $.get("/get_catch_log/", {
             "project_id":"{{ project_id }}"
@@ -288,7 +285,6 @@
                     document.getElementById('chose_catch').value=JSON.stringify(catch_logs[this.abcd]);
                     document.getElementById('request_data').value = "请求方式" + catch_logs[this.abcd].method + "\n\n【url】" + catch_logs[this.abcd].url;
                     document.getElementById('response_data').value = "响应头" + (catch_logs[this.abcd].response_headers) + "\n\n【响应体】" + catch_logs[this.abcd].response_content;
-
                 };
                 var l = document.createElement('label');
                 l.style.height = '20px';
@@ -300,23 +296,19 @@
                 l.insertAdjacentText('beforeend', ' ' + '【' + catch_logs[cl].method + '】' + catch_logs[cl].url)
                 d.appendChild(l)
                 mother.appendChild(d)
-
             }
-
         })
-
     }
-
     function clear_catch() {
-        document.getElementById('request_data').value = ''
-        document.getElementById('response_data').value = ''
-        document.getElementById('catch_log').innerHTML = ''
+        document.getElementById('request_data').value = '';
+        document.getElementById('response_data').value = '';
+        document.getElementById('catch_log').innerHTML = '';
     }
-
     function close_catch() {
         document.location.reload()
     }
     function import_catch(){
+        var chose_catch=document.getElementById('chose_catch').value;
         if(chose_catch==''){
             alert('请先选择一个请求记录！')
             return

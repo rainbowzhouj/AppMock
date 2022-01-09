@@ -15,6 +15,11 @@ class DB_project(models.Model):
     def __str__(self):
         return '项目名字是'+self.name
 
+
+
+
+
+
 class DB_mock(models.Model):
     name=models.CharField(max_length=30,null=True,blank=True)
     state=models.BooleanField(default=False)

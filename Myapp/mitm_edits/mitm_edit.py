@@ -20,7 +20,7 @@ from Myapp.models import *
 def filter(flow):
     #黑白名单
     project_id = os.path.basename(__file__).split('_')[0]  # 切分获取项目id
-    project = DB_project.objects.filter(id=project_id)
+    project = DB_project.objects.filter(id=project_id)[0]
     if project.white_hosts !='':
         if flow.request.url not in project.white_hosts.split(','):
             return False
@@ -30,7 +30,7 @@ def filter(flow):
 
 def write_catch_log(flow):
     project_id = os.path.basename(__file__).split('_')[0]  # 切分获取项目id
-    project=DB_project.objects.filter(id=project_id)[0]
+    project=DB_project.objects.filter(id=project_id)
     #读取开关
     catch=project[0].catch
     if catch==True:
