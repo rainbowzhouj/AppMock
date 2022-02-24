@@ -68,7 +68,6 @@ def project_data(request):
         res += '【' + str(len(DB_mock.objects.filter(project_id=project.id))) + '】'
         res += '【' + str(project.run_counts) + '】'
         res += '【' + str(project.mocks_counts) + '】'
-
         res += '<br>'
 
     return HttpResponse(res)
@@ -132,7 +131,6 @@ def send_email_pwd(request):
     send_mail('mock平台找回密码', msg, settings.EMAIL_FROM, [email])
 
     return HttpResponse('yes')
-    ...
 
 
 # 进入Mock列表页
@@ -162,7 +160,6 @@ def mock_list(request, project_id, ):
     res['project_state'] = '服务状态 ' + str(project.state)
     res['project_id'] = project_id
     res['project'] = project
-
     return render(request, 'mock_list.html', res)
 
 
@@ -185,16 +182,16 @@ def save_mock(request):
     mock_id = request.GET['mock_id']
     mock_name = request.GET['mock_name']
     catch_url = request.GET['catch_url']
-    mock_time = request.GET['mock_time']
     mock_response_body = request.GET['mock_response_body']
     model = request.GET['model']
     response_headers = request.GET['response_headers']
     state_code = request.GET['state_code']
     mock_response_body_lj = request.GET['mock_response_body_lj']
+    mock_time = request.GET['mock_time']
     DB_mock.objects.filter(id=mock_id).update(name=mock_name, catch_url=catch_url,
                                               mock_response_body=mock_response_body,
                                               model=model, response_headers=response_headers, state_code=state_code,
-                                              mock_response_body_lj=mock_response_body_lj, )
+                                              mock_response_body_lj=mock_response_body_lj,mock_time=mock_time )
     return HttpResponse('')
 
 
